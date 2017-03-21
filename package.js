@@ -2,9 +2,9 @@ Package.describe({
   name: 'danongba:meteor-sharedb',
   version: '0.0.1',
   // Brief, one-line summary of the package.
-  summary: '',
+  summary: 'Smooth and quick integration of a ShareDB real-time collaborative editor with React',
   // URL to the Git repository containing the source code for this package.
-  git: '',
+  git: 'https://github.com/darioAnongba/meteor-sharedb',
   // By default, Meteor will default to using README.md for documentation.
   // To avoid submitting documentation, set this field to null.
   documentation: 'README.md'
@@ -13,7 +13,8 @@ Package.describe({
 Package.onUse(function(api) {
   api.versionsFrom('1.4.3.1');
   api.use('ecmascript');
-  api.mainModule('meteor-sharedb.js');
+  api.mainModule('sharedb-client.js', 'client');
+  api.mainModule('sharedb-server.js', 'server')
 });
 
 Package.onTest(function(api) {
