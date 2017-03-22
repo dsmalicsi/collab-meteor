@@ -13,6 +13,7 @@ Package.describe({
 Package.onUse(function(api) {
   api.versionsFrom('1.4.3.1');
   api.use('ecmascript');
+  api.use('underscore');
   api.mainModule('sharedb-client.js', 'client');
   api.mainModule('sharedb-server.js', 'server')
 });
