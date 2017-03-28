@@ -84,8 +84,7 @@ export default class CollabMeteor {
    * @param {String} type OT type of this document
    * @param callback The callback function
    */
-  create(id, data = '', type = 'ot-json0', callback = () => {
-         }) {
+  create(id, data = '') {
     const doc = this.connection.get(this.collectionName, id);
     doc.fetch((err) => {
       if (err) throw err;
@@ -100,7 +99,7 @@ export default class CollabMeteor {
           default:
             type = 'ot-json0';
         }
-        doc.create(data, type, callback);
+        doc.create(data, () => {});
       }
     });
     return doc;
