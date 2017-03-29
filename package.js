@@ -11,11 +11,11 @@ Package.describe({
 });
 
 Npm.depends({
-  "sharedb": "^1.0.0-beta.7",
-  "sharedb-mongo": "^1.0.0-beta.3",
-  "sharedb-string-binding": "^1.0.0",
+  "sharedb": "1.0.0-beta.7",
+  "sharedb-mongo": "1.0.0-beta.3",
+  "sharedb-string-binding": "1.0.0",
   "websocket-json-stream": "0.0.3",
-  "ws": "^2.2.0"
+  "ws": "2.2.0"
 });
 
 Package.onUse(function(api) {
