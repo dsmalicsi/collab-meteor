@@ -39,17 +39,6 @@ export default class CollabMeteor {
    */
   constructor(collectionName) {
     this.collectionName = collectionName;
-
-    let db = {};
-    switch (options.db.type) {
-      case 'mongo':
-        db = require('sharedb-mongo')('mongodb://localhost:' + options.db.port + '/' + options.db.database);
-        break;
-      case 'in-memory':
-        break;
-      default:
-        Meteor._debug('ShareDBModel: Invalid Database type, using non-persistent instance (in memory)');
-    }
     this.connection = new ShareDB({db}).connect();
     this.OpsCollection = new Mongo.Collection("o_" + collectionName);
   }
@@ -80,26 +69,14 @@ export default class CollabMeteor {
    * Creates a new document or fetch a document if it already exists.
    *
    * @param {String} id The document id
-   * @param {String} data The document initial data
-   * @param {String} type OT type of this document
-   * @param callback The callback function
+   * @param {Object} data The document initial data
    */
   create(id, data = '') {
     const doc = this.connection.get(this.collectionName, id);
     doc.fetch((err) => {
       if (err) throw err;
       if (doc.type === null) {
-        switch (type) {
-          case 'rich':
-            type = 'rich-text';
-            break;
-          case 'text':
-            type = 'ot-text';
-            break;
-          default:
-            type = 'ot-json0';
-        }
-        doc.create(data, () => {});
+        doc.create(data);
       }
     });
     return doc;
