@@ -22,7 +22,7 @@ Package.onUse(function(api) {
   api.versionsFrom('1.4.3.1');
   api.use('ecmascript');
   api.use('underscore', 'server');
-  api.mainModule('sharedb-client.js', 'client');
+  api.mainModule('collab-meteor-client.js', 'client');
   api.mainModule('collab-meteor-server.js', 'server')
 });
 
