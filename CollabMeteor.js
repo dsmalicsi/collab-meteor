@@ -2,6 +2,8 @@
  * Created by dario on 06.04.17.
  */
 import { Meteor } from 'meteor/meteor';
+import { Mongo } from 'meteor/mongo';
+
 import http from 'http';
 import ShareDB from 'sharedb';
 import WebSocket from 'ws';
@@ -10,19 +12,13 @@ import options from './options';
 
 export const CollabMeteor = ShareDB || {};
 
-let db = null;
-switch (options.db.type) {
-  case 'mongo':
-    db = require('sharedb-mongo')('mongodb://localhost:' + options.db.port + '/' + options.db.database);
-    break;
-  default:
-    Meteor._debug('ShareDBModel: Invalid Database type, using non-persistent instance (in memory)');
-}
+let db = require('sharedb-mongo')('mongodb://localhost:' + options.db.port + '/' + options.db.database);
 
 const server = http.createServer();
 const backend = new ShareDB({db});
 
 CollabMeteor.backend = backend;
+CollabMeteor.OpsCollection = new Mongo.Collection('o_docs');
 
 CollabMeteor.startServer = () => {
   new WebSocket.Server({server: server})

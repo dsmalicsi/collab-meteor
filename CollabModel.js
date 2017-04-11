@@ -11,7 +11,7 @@ export class CollabModel {
     const backend = CollabMeteor.backend;
     this.connection = backend.connect();
     this.collection = collection;
-    this.OpsCollection = new Mongo.Collection("o_" + collection._name);
+    this.OpsCollection = CollabMeteor.OpsCollection;
   }
 
   /**
@@ -25,6 +25,7 @@ export class CollabModel {
     doc.fetch((err) => {
       if (err) throw err;
       if (doc.type === null) {
+        console.log('I\'m here 2!');
         doc.create(data, function (err) {
           if(err) throw err;
         });
@@ -37,12 +38,13 @@ export class CollabModel {
    * Fetches a document with id id.
    *
    * @param {String} id The id of the document to fetch
-   * @param callback The callback function
    */
-  fetch(id, callback = () => {}) {
-    const doc = this.connection.get(this.collectionName, id);
-    doc.fetch(callback);
-    return doc;
+  fetch(id) {
+    const doc = this.connection.get(this.collection._name, id);
+    doc.fetch((err) => {
+      if (err) throw err;
+      return doc;
+    });
   }
 
   /**
@@ -51,7 +53,12 @@ export class CollabModel {
    * @param id
    */
   remove(id) {
-    //this.collection.remove(id);
-    //this.OpsCollection.remove({'d': id});
+    const doc = this.connection.get('docs', id);
+    doc.fetch((err) => {
+      if (err) throw err;
+      doc.del();
+    });
+
+    this.OpsCollection.remove({'d': id});
   }
 }

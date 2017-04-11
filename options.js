@@ -6,7 +6,6 @@
 export default options = _.extend({
   port: 8080,
   db: {
-    type: 'mongo',
     port: 3001,
     database: 'meteor',
   }
