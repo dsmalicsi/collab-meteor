@@ -22,7 +22,7 @@ switch (options.db.type) {
 const server = http.createServer();
 const backend = new ShareDB({db});
 
-CollabMeteor.db = db;
+CollabMeteor.backend = backend;
 
 CollabMeteor.startServer = () => {
   new WebSocket.Server({server: server})

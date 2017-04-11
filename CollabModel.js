@@ -1,20 +1,17 @@
 /**
  * Created by dario on 06.04.17.
  */
-import ShareDB from 'sharedb';
 import { CollabMeteor } from './CollabMeteor';
 
 export class CollabModel {
   /**
-   * @param {string} collectionName The collection name
+   * @param {Object} collection The collection to bind to ShareDB
    */
-  constructor(collectionName) {
-    const db = CollabMeteor.db;
-    this.collectionName = collectionName;
-    this.connection = new ShareDB({db}).connect();
-
-    this.collection = new Mongo.Collection(collectionName);
-    this.OpsCollection = new Mongo.Collection("o_" + collectionName);
+  constructor(collection) {
+    const backend = CollabMeteor.backend;
+    this.connection = backend.connect();
+    this.collection = collection;
+    this.OpsCollection = new Mongo.Collection("o_" + collection._name);
   }
 
   /**
@@ -24,11 +21,13 @@ export class CollabModel {
    * @param {Object} data The document initial data
    */
   create(id, data = '') {
-    const doc = this.connection.get(this.collectionName, id);
+    const doc = this.connection.get(this.collection._name, id);
     doc.fetch((err) => {
       if (err) throw err;
       if (doc.type === null) {
-        doc.create(data);
+        doc.create(data, function (err) {
+          if(err) throw err;
+        });
       }
     });
     return doc;
