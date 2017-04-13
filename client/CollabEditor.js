@@ -6,7 +6,7 @@ import ReactDOM from 'react-dom';
 import StringBinding from 'sharedb-string-binding';
 import connection from './connection';
 
-export class CollabTextarea extends Component {
+export class CollabEditor extends Component {
   constructor(props) {
     super(props);
     this.state = {

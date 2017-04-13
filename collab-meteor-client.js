@@ -4,6 +4,7 @@ checkNpmVersions({
   'react': '15.4.2',
   'react-dom': '15.4.2',
   "react-router": "3.0.2"
-}, 'danongba:meteor-sharedb');
+}, 'danongba:collab-meteor');
 
-export { CollabTextarea } from './CollabTextarea.js';
+export { CollabEditor } from './client/CollabEditor.js';
+export { CollabForm } from './client/form/CollabForm.js';

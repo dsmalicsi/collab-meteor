@@ -4,5 +4,5 @@
  * Creates a ShareDB server (persistent with Mongo by default)
  */
 
-export { CollabMeteor } from './CollabMeteor';
-export { CollabModel } from './CollabModel';
+export { CollabMeteor } from './server/CollabMeteor';
+export { CollabModel } from './server/CollabModel';
