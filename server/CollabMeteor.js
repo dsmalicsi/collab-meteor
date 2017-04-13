@@ -27,7 +27,6 @@ const server = http.createServer();
 const backend = new ShareDB({db});
 
 CollabMeteor.backend = backend;
-CollabMeteor.OpsCollection = new Mongo.Collection('o_docs');
 
 CollabMeteor.startServer = () => {
   new WebSocket.Server({server: server})

@@ -1,6 +1,7 @@
 /**
  * Created by dario on 06.04.17.
  */
+import { Meteor } from 'meteor/meteor';
 import { CollabMeteor } from './CollabMeteor';
 
 export class CollabModel {
@@ -9,9 +10,13 @@ export class CollabModel {
    */
   constructor(collection) {
     const backend = CollabMeteor.backend;
+    if (backend === null) {
+      throw new Meteor.Error('CollabModel: You should start the CollabMeteor server before using the model.');
+    }
+
     this.connection = backend.connect();
-    this.collection = collection;
-    this.OpsCollection = CollabMeteor.OpsCollection;
+    this.collectionName = 'collab_data_' + collection._name;
+    this.OpsCollection = new Mongo.Collection('o_' + this.collectionName);
   }
 
   /**
@@ -20,12 +25,11 @@ export class CollabModel {
    * @param {String} id The document id
    * @param {Object} data The document initial data
    */
-  create(id, data = '') {
-    const doc = this.connection.get(this.collection._name, id);
+  create(id, data = {}) {
+    const doc = this.connection.get(this.collectionName, id);
     doc.fetch((err) => {
       if (err) throw err;
       if (doc.type === null) {
-        console.log('I\'m here 2!');
         doc.create(data, function (err) {
           if(err) throw err;
         });
@@ -35,25 +39,25 @@ export class CollabModel {
   }
 
   /**
-   * Fetches a document with id id.
+   * Fetches the data of a document with id id.
    *
    * @param {String} id The id of the document to fetch
    */
-  fetch(id) {
-    const doc = this.connection.get(this.collection._name, id);
+  fetchData(id) {
+    const doc = this.connection.get(this.collectionName, id);
     doc.fetch((err) => {
       if (err) throw err;
-      return doc;
+      doc.del();
     });
   }
 
   /**
-   * Removes a document with id id.
+   * Deletes a document with id id.
    *
    * @param id
    */
   remove(id) {
-    const doc = this.connection.get('docs', id);
+    const doc = this.connection.get(this.collectionName, id);
     doc.fetch((err) => {
       if (err) throw err;
       doc.del();
