@@ -47,7 +47,7 @@ export class CollabModel {
     const doc = this.connection.get(this.collectionName, id);
     doc.fetch((err) => {
       if (err) throw err;
-      doc.del();
+      return doc.data;
     });
   }
 
@@ -58,7 +58,7 @@ export class CollabModel {
    */
   remove(id) {
     const doc = this.connection.get(this.collectionName, id);
-    doc.fetch((err) => {
+    doc.subscribe((err) => {
       if (err) throw err;
       doc.del();
     });
