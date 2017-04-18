@@ -9,13 +9,13 @@ import connection from './connection';
 /**
  * Collaborative Editor class.
  *
- * Creates a new collaborative editor fetching data from the shareDB collection and displaying it in a <textarea/>
+ * Creates a new collaborative editor fetching data from the ShareDB collection and displaying it in a <textarea/>
  * The editor takes as props:
  * - id: ID of the document to fetch
  * - collectionName: The name of the collection
  * - classname: Optional classname to apply to the textarea
  */
-export class CollabEditor extends Component {
+export default class CollabEditor extends Component {
   constructor(props) {
     super(props);
     this.state = {

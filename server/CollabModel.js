@@ -25,7 +25,7 @@ export class CollabModel {
    * @param {String} id The document id
    * @param {Object} data The document initial data
    */
-  create(id, data = {}) {
+  create(id, data = '') {
     const doc = this.connection.get(this.collectionName, id);
     doc.fetch((err) => {
       if (err) throw err;
@@ -52,7 +52,7 @@ export class CollabModel {
   }
 
   /**
-   * Deletes a document with id id.
+   * Deletes a document with ID id.
    *
    * @param id
    */
