@@ -29,12 +29,15 @@ export class CollabEditor extends Component {
 
   componentWillReceiveProps(nextProps) {
     if(!_.isEqual(this.props, nextProps)) {
-      this.state.doc.unsubscribe();
-      this.state.doc.destroy();
-      this.binding.destroy();
-
+      this.destroyBinding();
       this.subscribeToDoc(nextProps);
     }
+  }
+
+  destroyBinding() {
+    this.state.doc.unsubscribe();
+    this.state.doc.destroy();
+    this.binding.destroy();
   }
 
   subscribeToDoc(props) {
@@ -55,9 +58,7 @@ export class CollabEditor extends Component {
     }
 
     function del() {
-      comp.state.doc.unsubscribe();
-      comp.state.doc.destroy();
-      comp.binding.destroy();
+      comp.destroyBinding();
     }
   }
 
@@ -68,9 +69,7 @@ export class CollabEditor extends Component {
   }
 
   componentWillUnmount(){
-    this.state.doc.unsubscribe();
-    this.state.doc.destroy();
-    this.binding.destroy();
+    this.destroyBinding();
   }
 
   render() {
