@@ -1,56 +1,68 @@
 /**
  * Created by dario on 04.04.17.
  */
-import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
-import StringBinding from 'sharedb-string-binding';
+import React, { PropTypes } from 'react';
+import CollabField from "./CollabField";
 
-export default class CollabTextInput extends Component {
+class CollabTextInput extends CollabField {
   constructor(props) {
     super(props);
-    this.state = {
-      form: props.formContext
-    };
-  }
-
-  componentDidMount() {
-    this.createBinding(this.props);
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if(!_.isEqual(this.props, nextProps)) {
-      console.log('willReceiveProps');
-      this.destroyBinding();
-    }
-  }
-
-  componentWillUnmount(){
-    this.destroyBinding();
-  }
-
-  createBinding() {
-    const widget = ReactDOM.findDOMNode(this._widget);
-    this.binding = new StringBinding(widget, this.state.form, [this.props.id]);
-    this.binding.setup();
-  }
-
-  destroyBinding() {
-    this.state.form.unsubscribe();
-    this.state.form.destroy();
-    this.binding.destroy();
   }
 
   render() {
-    const {id, value, required, readonly} = this.props;
+    const {
+      value,
+      readonly,
+      disabled,
+      autofocus,
+      onBlur,
+      options,
+      schema,
+      formContext,
+      registry,
+      ...inputProps
+    } = this.props;
+
+    const _onChange = ({ target: { value } }) => {
+      return this.props.onChange(value === "" ? options.emptyValue : value);
+    };
+
     return (
       <input
-        ref={(ref) => this._widget = ref}
-        id={id}
+        {...inputProps}
         className="form-control"
-        value={value}
-        required={required}
         readOnly={readonly}
+        disabled={disabled}
+        autoFocus={autofocus}
+        value={value == null ? "" : value}
+        onChange={_onChange}
+        onBlur={onBlur && (event => onBlur(inputProps.id, event.target.value))}
+        ref={(ref) => this._widget = ref}
       />
-    );
+    )
   }
 }
+
+CollabTextInput.defaultProps = {
+  type: "text",
+  required: false,
+  disabled: false,
+  readonly: false,
+  autofocus: false,
+};
+
+if (process.env.NODE_ENV !== "production") {
+  CollabTextInput.propTypes = {
+    id: PropTypes.string.isRequired,
+    placeholder: PropTypes.string,
+    value: PropTypes.any,
+    required: PropTypes.bool,
+    disabled: PropTypes.bool,
+    readonly: PropTypes.bool,
+    autofocus: PropTypes.bool,
+    onChange: PropTypes.func,
+    onBlur: PropTypes.func,
+  };
+}
+
+export default CollabTextInput;

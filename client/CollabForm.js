@@ -65,16 +65,25 @@ export class CollabForm extends Component {
   }
 
   render() {
-    const { schema, uiSchema, classNames } = this.props;
+    const {
+      schema,
+      uiSchema,
+      classNames,
+      onChange,
+      onSubmit,
+      onError
+    } = this.props;
     return (
       this.state.form &&
       <Form
         schema={schema}
         uiSchema={uiSchema}
-        formData= {this.state.form.data}
+        onChange={onChange}
+        onSubmit={onSubmit}
+        onError={onError}
         widgets={this.customWidgets}
         formContext={this.state.form}
-        className={classNames}
+        classNames={classNames}
       />
     )
   }
@@ -85,5 +94,8 @@ CollabForm.PropTypes = {
   collectionName: PropTypes.string.isRequired,
   id: PropTypes.string.isRequired,
   uiSchema: PropTypes.object,
-  classNames: PropTypes.string
+  classNames: PropTypes.string,
+  onChange: PropTypes.func,
+  onSubmit: PropTypes.func,
+  onError: PropTypes.func
 };
