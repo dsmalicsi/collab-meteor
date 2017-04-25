@@ -25,10 +25,10 @@ export class CollabForm extends Component {
       form: null
     };
 
-    this.customWidgets = {
+    _.extend(this.props.widgets, {
       collabTextInput: CollabTextInput,
       collabTextarea: CollabTextarea
-    };
+    });
   };
 
   componentWillMount() {
@@ -65,37 +65,55 @@ export class CollabForm extends Component {
   }
 
   render() {
-    const {
-      schema,
-      uiSchema,
-      classNames,
-      onChange,
-      onSubmit,
-      onError
-    } = this.props;
     return (
       this.state.form &&
       <Form
-        schema={schema}
-        uiSchema={uiSchema}
-        onChange={onChange}
-        onSubmit={onSubmit}
-        onError={onError}
-        widgets={this.customWidgets}
+        {...this.props}
         formContext={this.state.form}
-        classNames={classNames}
       />
     )
   }
 }
 
-CollabForm.PropTypes = {
-  schema: PropTypes.object.isRequired,
-  collectionName: PropTypes.string.isRequired,
-  id: PropTypes.string.isRequired,
-  uiSchema: PropTypes.object,
-  classNames: PropTypes.string,
-  onChange: PropTypes.func,
-  onSubmit: PropTypes.func,
-  onError: PropTypes.func
+if (process.env.NODE_ENV !== "production") {
+  CollabForm.propTypes = {
+    schema: PropTypes.object.isRequired,
+    uiSchema: PropTypes.object,
+    formData: PropTypes.any,
+    widgets: PropTypes.objectOf(
+      PropTypes.oneOfType([PropTypes.func, PropTypes.object])
+    ),
+    fields: PropTypes.objectOf(PropTypes.func),
+    ArrayFieldTemplate: PropTypes.func,
+    FieldTemplate: PropTypes.func,
+    ErrorList: PropTypes.func,
+    onChange: PropTypes.func,
+    onError: PropTypes.func,
+    showErrorList: PropTypes.bool,
+    onSubmit: PropTypes.func,
+    id: PropTypes.string,
+    className: PropTypes.string,
+    name: PropTypes.string,
+    method: PropTypes.string,
+    target: PropTypes.string,
+    action: PropTypes.string,
+    autocomplete: PropTypes.string,
+    enctype: PropTypes.string,
+    acceptcharset: PropTypes.string,
+    noValidate: PropTypes.bool,
+    noHtml5Validate: PropTypes.bool,
+    liveValidate: PropTypes.bool,
+    validate: PropTypes.func,
+    transformErrors: PropTypes.func,
+    safeRenderCompletion: PropTypes.bool,
+  };
+}
+
+CollabForm.defaultProps = {
+  uiSchema: {},
+  widgets: {},
+  noValidate: false,
+  liveValidate: false,
+  safeRenderCompletion: false,
+  noHtml5Validate: false,
 };
