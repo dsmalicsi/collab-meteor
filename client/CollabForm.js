@@ -2,11 +2,12 @@
  * Created by dario on 13.04.17.
  */
 
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
 import Form from "react-jsonschema-form";
 import connection from './connection';
-import CollabTextarea from './widgets/CollabTextarea';
-import CollabTextInput from './widgets/CollabTextInput';
+import CollabTextarea from './fields/CollabTextarea';
+import CollabText from './fields/CollabText';
+
 
 /**
  * Collaborative Form class.
@@ -25,8 +26,8 @@ export class CollabForm extends Component {
       form: null
     };
 
-    _.extend(this.props.widgets, {
-      collabTextInput: CollabTextInput,
+    _.extend(this.props.fields, {
+      collabText: CollabText,
       collabTextarea: CollabTextarea
     });
   };
@@ -75,43 +76,10 @@ export class CollabForm extends Component {
   }
 }
 
-if (process.env.NODE_ENV !== "production") {
-  CollabForm.propTypes = {
-    schema: PropTypes.object.isRequired,
-    uiSchema: PropTypes.object,
-    formData: PropTypes.any,
-    widgets: PropTypes.objectOf(
-      PropTypes.oneOfType([PropTypes.func, PropTypes.object])
-    ),
-    fields: PropTypes.objectOf(PropTypes.func),
-    ArrayFieldTemplate: PropTypes.func,
-    FieldTemplate: PropTypes.func,
-    ErrorList: PropTypes.func,
-    onChange: PropTypes.func,
-    onError: PropTypes.func,
-    showErrorList: PropTypes.bool,
-    onSubmit: PropTypes.func,
-    id: PropTypes.string,
-    className: PropTypes.string,
-    name: PropTypes.string,
-    method: PropTypes.string,
-    target: PropTypes.string,
-    action: PropTypes.string,
-    autocomplete: PropTypes.string,
-    enctype: PropTypes.string,
-    acceptcharset: PropTypes.string,
-    noValidate: PropTypes.bool,
-    noHtml5Validate: PropTypes.bool,
-    liveValidate: PropTypes.bool,
-    validate: PropTypes.func,
-    transformErrors: PropTypes.func,
-    safeRenderCompletion: PropTypes.bool,
-  };
-}
-
 CollabForm.defaultProps = {
   uiSchema: {},
   widgets: {},
+  fields: {},
   noValidate: false,
   liveValidate: false,
   safeRenderCompletion: false,

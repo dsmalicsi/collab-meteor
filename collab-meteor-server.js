@@ -6,3 +6,4 @@
 
 export { CollabMeteor } from './server/CollabMeteor';
 export { CollabModel } from './server/CollabModel';
+export { CollabFormModel } from './server/CollabFormModel';
