@@ -8,7 +8,6 @@ import connection from './connection';
 import CollabTextarea from './fields/CollabTextarea';
 import CollabText from './fields/CollabText';
 
-
 /**
  * Collaborative Form class.
  *
@@ -71,6 +70,7 @@ export class CollabForm extends Component {
       <Form
         {...this.props}
         formContext={this.state.form}
+        formData={this.state.form.data}
       />
     )
   }

@@ -13,10 +13,6 @@ class CollabField extends Component {
     this.createBinding();
   }
 
-  componentWillReceiveProps(nextProps) {
-    console.log('New props !');
-  }
-
   componentWillUnmount(){
     this.destroyBinding();
   }
