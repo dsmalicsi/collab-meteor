@@ -23,16 +23,16 @@ export class CollabFormModel extends CollabModel {
       if (err) throw err;
       // If the document doesn't already exist, we create it following the schema.
       if (doc.type === null) {
-        let formData = {};
+        let data = {formData: {}};
         _.each(schema.properties, function (value, key) {
           let prop = {};
           if(value.type === "string") {
             prop[key] = typeof(value.default) === "undefined" ? "" : value.default ;
           }
-          _.extend(formData, prop);
+          _.extend(data.formData, prop);
         });
 
-        doc.create(formData, function (err) {
+        doc.create(data, function (err) {
           if(err) throw err;
           return doc;
         });

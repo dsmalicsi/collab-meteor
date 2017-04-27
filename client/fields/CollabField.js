@@ -3,6 +3,13 @@
  */
 import React, { Component, PropTypes } from 'react';
 import StringBinding from 'sharedb-string-binding';
+import CollabTextareaWidget from '../widgets/CollabTextareaWidget';
+import CollabTextWidget from '../widgets/CollabTextWidget';
+
+import {
+  getUiOptions,
+  getDefaultRegistry,
+} from "react-jsonschema-form/lib/utils";
 
 class CollabField extends Component {
   constructor(props) {
@@ -18,7 +25,7 @@ class CollabField extends Component {
   }
 
   createBinding() {
-    this.binding = new StringBinding(this._widget, this.props.formContext, [this.props.name]);
+    this.binding = new StringBinding(this._widget, this.props.formContext, ['formData', this.props.name]);
     this.binding.setup();
   }
 
@@ -26,6 +33,63 @@ class CollabField extends Component {
     this.state.form.unsubscribe();
     this.state.form.destroy();
     this.binding.destroy();
+  }
+
+  static getWidget(widget) {
+    switch(widget) {
+      case 'text':
+        return CollabTextWidget;
+      case 'textarea':
+        return CollabTextareaWidget;
+      default:
+        console.log('Unsupported collaborative type');
+    }
+  }
+
+  render() {
+    const {
+      schema,
+      name,
+      uiSchema,
+      idSchema,
+      formData,
+      required,
+      disabled,
+      readonly,
+      autofocus,
+      registry,
+      onChange,
+      onBlur,
+    } = this.props;
+
+    const { title } = schema;
+    const { formContext } = registry;
+    const defaultWidget = "text";
+    const { widget = defaultWidget, placeholder = "", ...options } = getUiOptions(
+      uiSchema
+    );
+    const Widget = CollabField.getWidget(widget);
+
+    return (
+      <Widget
+        options={{ ...options }}
+        schema={schema}
+        id={idSchema && idSchema.$id}
+        label={title === undefined ? name : title}
+        value={formData}
+        onChange={onChange}
+        onBlur={onBlur}
+        required={required}
+        disabled={disabled}
+        readonly={readonly}
+        formContext={formContext}
+        autofocus={autofocus}
+        registry={registry}
+        placeholder={placeholder}
+        widgetRef={w => this._widget = w}
+      />
+    );
+
   }
 }
 
@@ -40,6 +104,14 @@ if (process.env.NODE_ENV !== "production") {
       React.PropTypes.string,
       React.PropTypes.number,
     ]),
+    registry: PropTypes.shape({
+      widgets: PropTypes.objectOf(
+        PropTypes.oneOfType([PropTypes.func, PropTypes.object])
+      ).isRequired,
+      fields: PropTypes.objectOf(PropTypes.func).isRequired,
+      definitions: PropTypes.object.isRequired,
+      formContext: PropTypes.object.isRequired,
+    }),
     formContext: PropTypes.object.isRequired,
     required: PropTypes.bool,
     disabled: PropTypes.bool,
@@ -50,6 +122,7 @@ if (process.env.NODE_ENV !== "production") {
 
 CollabField.defaultProps = {
   uiSchema: {},
+  registry: getDefaultRegistry(),
   disabled: false,
   readonly: false,
   autofocus: false,

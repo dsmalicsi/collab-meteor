@@ -5,8 +5,7 @@
 import React, { Component } from 'react';
 import Form from "react-jsonschema-form";
 import connection from './connection';
-import CollabTextarea from './fields/CollabTextarea';
-import CollabText from './fields/CollabText';
+import CollabField from './fields/CollabField';
 
 /**
  * Collaborative Form class.
@@ -26,8 +25,7 @@ export class CollabForm extends Component {
     };
 
     _.extend(this.props.fields, {
-      collabText: CollabText,
-      collabTextarea: CollabTextarea
+      StringField: CollabField,
     });
   };
 
