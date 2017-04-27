@@ -1,73 +1,86 @@
 /**
  * Created by dario on 11.04.17.
  */
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import ReactDOM from 'react-dom';
 import StringBinding from 'sharedb-string-binding';
 import connection from './connection';
 
+/**
+ * Collaborative Editor class.
+ *
+ * Creates a new collaborative editor fetching data from the ShareDB collection and displaying it in a <textarea/>
+ * The editor takes as props:
+ * - id: ID of the document to fetch
+ * - collectionName: The name of the collection
+ * - classname: Optional classname to apply to the textarea
+ */
 export class CollabEditor extends Component {
   constructor(props) {
     super(props);
     this.state = {
       doc: null
-    }
+    };
   }
 
   componentWillMount() {
+    this.subscribeToDoc(this.props);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if(!_.isEqual(this.props, nextProps)) {
+      this.destroyBinding();
+      this.subscribeToDoc(nextProps);
+    }
+  }
+
+  destroyBinding() {
+    this.state.doc.unsubscribe();
+    this.state.doc.destroy();
+    this.binding.destroy();
+  }
+
+  subscribeToDoc(props) {
     const comp = this;
-    const doc = connection.get('docs', this.props.id);
+    const doc = connection.get('collab_data_' + props.collectionName, props.id);
     doc.subscribe((err) => {
       if (err) console.log(err);
       if(doc.type === null) {
-        doc.create('', function (err) {
-          if (err) throw err;
-        })
+        console.log('No document exist with id: ' + props.id);
       }
     });
-    this.setState({doc: doc});
 
-    doc.on('create', update);
-    doc.on('load', update);
+    doc.on('load', load);
     doc.on('del', del);
 
-    function update() {
-      comp.setState({doc: doc});
+    function load() {
+      comp.setState({doc: doc}, comp.createBinding);
     }
 
     function del() {
-      comp.state.doc.destroy();
-      comp.setState({doc: null});
-
-      comp.cleanTextare();
+      comp.destroyBinding();
     }
   }
 
-  componentDidMount() {
-    this.fillTextarea();
-  }
-
-  fillTextarea() {
+  createBinding() {
     const textArea = ReactDOM.findDOMNode(this._textarea);
-    this.state.doc.subscribe((err) => {
-      if (err) throw err;
-      const binding = new StringBinding(textArea, this.state.doc);
-      binding.setup();
-    });
-  }
-
-  cleanTextare() {
-    const textArea = ReactDOM.findDOMNode(this._textarea);
-    textArea.value = '';
+    this.binding = new StringBinding(textArea, this.state.doc);
+    this.binding.setup();
   }
 
   componentWillUnmount(){
-    this.state.doc.destroy();
+    this.destroyBinding();
   }
 
   render() {
     return (
-      <textarea ref={(ref) => this._textarea = ref} className="form-control" rows="10"/>
+      <textarea ref={(ref) => this._textarea = ref} className={this.props.className} rows="10"/>
     );
   }
 }
+
+CollabEditor.PropTypes = {
+  className: PropTypes.string,
+  id: PropTypes.string.isRequired,
+  collectionName: PropTypes.string.isRequired
+};
