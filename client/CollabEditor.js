@@ -15,7 +15,7 @@ import connection from './connection';
  * - collectionName: The name of the collection
  * - classname: Optional classname to apply to the textarea
  */
-export default class CollabEditor extends Component {
+export class CollabEditor extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -54,7 +54,7 @@ export default class CollabEditor extends Component {
     doc.on('del', del);
 
     function load() {
-      comp.setState({doc: doc}, comp.fillEditor);
+      comp.setState({doc: doc}, comp.createBinding);
     }
 
     function del() {
@@ -62,7 +62,7 @@ export default class CollabEditor extends Component {
     }
   }
 
-  fillEditor() {
+  createBinding() {
     const textArea = ReactDOM.findDOMNode(this._textarea);
     this.binding = new StringBinding(textArea, this.state.doc);
     this.binding.setup();
@@ -82,5 +82,5 @@ export default class CollabEditor extends Component {
 CollabEditor.PropTypes = {
   className: PropTypes.string,
   id: PropTypes.string.isRequired,
-  collectionName: PropTypes.string.isRequired,
+  collectionName: PropTypes.string.isRequired
 };
