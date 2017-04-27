@@ -11,9 +11,12 @@ import {
   getDefaultRegistry,
 } from "react-jsonschema-form/lib/utils";
 
-class CollabField extends Component {
+class CollabStringField extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      form: this.props.formContext
+    }
   }
 
   componentDidMount() {
@@ -25,7 +28,7 @@ class CollabField extends Component {
   }
 
   createBinding() {
-    this.binding = new StringBinding(this._widget, this.props.formContext, ['formData', this.props.name]);
+    this.binding = new StringBinding(this._widget, this.state.form, [this.props.name]);
     this.binding.setup();
   }
 
@@ -68,7 +71,7 @@ class CollabField extends Component {
     const { widget = defaultWidget, placeholder = "", ...options } = getUiOptions(
       uiSchema
     );
-    const Widget = CollabField.getWidget(widget);
+    const Widget = CollabStringField.getWidget(widget);
 
     return (
       <Widget
@@ -94,7 +97,7 @@ class CollabField extends Component {
 }
 
 if (process.env.NODE_ENV !== "production") {
-  CollabField.propTypes = {
+  CollabStringField.propTypes = {
     schema: PropTypes.object.isRequired,
     uiSchema: PropTypes.object.isRequired,
     idSchema: PropTypes.object,
@@ -120,7 +123,7 @@ if (process.env.NODE_ENV !== "production") {
   };
 }
 
-CollabField.defaultProps = {
+CollabStringField.defaultProps = {
   uiSchema: {},
   registry: getDefaultRegistry(),
   disabled: false,
@@ -128,4 +131,4 @@ CollabField.defaultProps = {
   autofocus: false,
 };
 
-export default CollabField;
+export default CollabStringField;

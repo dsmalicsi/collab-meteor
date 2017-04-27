@@ -5,7 +5,7 @@
 import React, { Component } from 'react';
 import Form from "react-jsonschema-form";
 import connection from './connection';
-import CollabField from './fields/CollabField';
+import CollabStringField from './fields/CollabStringField';
 
 /**
  * Collaborative Form class.
@@ -25,18 +25,12 @@ export class CollabForm extends Component {
     };
 
     _.extend(this.props.fields, {
-      StringField: CollabField,
+      StringField: CollabStringField,
     });
   };
 
   componentWillMount() {
     this.subscribeToForm(this.props);
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if(!_.isEqual(this.props, nextProps)) {
-      console.log('WillReceiveProps');
-    }
   }
 
   subscribeToForm(props) {
@@ -58,8 +52,15 @@ export class CollabForm extends Component {
     }
 
     function del() {
-      console.log('deleting');
+      comp.state.form.destroy();
+      comp.state.form.unsubscribe();
+      comp.setState({form: null});
     }
+  }
+
+  _onChange(x){
+    console.log(x.formData);
+    this.props.onChange(x);
   }
 
   render() {
@@ -67,6 +68,7 @@ export class CollabForm extends Component {
       this.state.form &&
       <Form
         {...this.props}
+        onChange={this._onChange.bind(this)}
         formContext={this.state.form}
         formData={this.state.form.data}
       />
