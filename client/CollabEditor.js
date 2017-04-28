@@ -74,13 +74,24 @@ export class CollabEditor extends Component {
 
   render() {
     return (
-      <textarea ref={(ref) => this._textarea = ref} className={this.props.className} rows="10"/>
+      <textarea
+        onChange={this._onChange}
+        ref={(ref) => this._textarea = ref}
+        className={this.props.classNames}
+        rows={this.props.rows}
+      />
     );
   }
 }
 
+CollabEditor.defaultProps = {
+  classNames: "form-control"
+};
+
 CollabEditor.PropTypes = {
-  className: PropTypes.string,
   id: PropTypes.string.isRequired,
-  collectionName: PropTypes.string.isRequired
+  collectionName: PropTypes.string.isRequired,
+  className: PropTypes.string,
+  rows: PropTypes.number,
+  onChange: PropTypes.func
 };

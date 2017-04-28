@@ -1,7 +1,7 @@
 import { checkNpmVersions } from 'meteor/tmeasday:check-npm-versions';
 
 checkNpmVersions({
-  'react': '15.4.2',
+  'react': '15.4.0',
   'react-dom': '15.4.2',
   'react-router': '3.0.2',
   'react-jsonschema-form': '0.45.0'
