@@ -67,7 +67,6 @@ class CollabForm extends Component {
   }
 
   onChange(changeStatus){
-    const old = this.old
     console.log(changeStatus);
     // We update every element that is non collaborative on onChange
     _.each(this.state.nonCollabKeys, function(value) {
