@@ -2,8 +2,7 @@
  * Created by dario on 04.05.17.
  */
 import React, { Component } from 'react';
-
-import { CollabForm } from 'meteor/danongba:collab-meteor';
+import { CollabForm } from '../../../collab-meteor-client';
 
 // App component - represents the whole app
 export default class App extends Component {
@@ -16,6 +15,7 @@ export default class App extends Component {
       required: ["input", "textarea"],
       properties: {
         input: {type: "string", title: "Input"},
+        checkbox: {type: "boolean", title: "Checkbox"},
         textarea: {type: "string", title: "Textarea", default: 'Default text'},
       }
     };
@@ -44,8 +44,6 @@ export default class App extends Component {
         <header>
           <h1>Collaborative Form</h1>
         </header>
-
-        <hr/>
 
         <CollabForm
           id="myForm"

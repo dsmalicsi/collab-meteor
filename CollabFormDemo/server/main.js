@@ -10,14 +10,15 @@ const schema = {
   type: "object",
   properties: {
     input: {type: "string", title: "Input"},
+    checkbox: {type: "boolean", title: "Checkbox"},
     textarea: {type: "string", title: "Textarea", default: 'Default text'},
   }
 };
 
-// Create the form data
+// Create the shared form data
 formModel.createForm("myForm", schema);
 
 Meteor.startup(() => {
-  // start CollabMeteor server
+  // start the CollabMeteor server
   CollabMeteor.startServer();
 });
