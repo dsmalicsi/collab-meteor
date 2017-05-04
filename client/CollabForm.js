@@ -21,7 +21,8 @@ class CollabForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      form: null
+      form: null,
+      nonCollabKeys: ['checkbox']
     };
 
     _.extend(this.props.fields, {
@@ -34,7 +35,6 @@ class CollabForm extends Component {
   }
 
   subscribeToForm(props) {
-    const comp = this;
     const form = connection.get('collab_data_' + props.collectionName, props.id);
     form.subscribe((err) => {
       if (err) console.log(err);
@@ -43,24 +43,41 @@ class CollabForm extends Component {
       }
     });
 
-    form.on('load', load);
-    form.on('del', del);
+    form.on('load', load.bind(this));
+    form.on('op', update.bind(this));
+    form.on('del', del.bind(this));
 
     function load() {
+      // We save all non-collaborative keys TODO
+
       // Form data available only when we are done loading the form
-      comp.setState({form: form});
+      this.setState({form: form});
+    }
+
+    function update() {
+      console.log('updated');
+      this.setState({form: form});
     }
 
     function del() {
-      comp.state.form.destroy();
-      comp.state.form.unsubscribe();
-      comp.setState({form: null});
+      this.state.form.destroy();
+      this.state.form.unsubscribe();
+      this.setState({form: null});
     }
   }
 
-  _onChange(x){
-    console.log(x.formData);
-    this.props.onChange(x);
+  onChange(changeStatus){
+    const old = this.old
+    console.log(changeStatus);
+    // We update every element that is non collaborative on onChange
+    _.each(this.state.nonCollabKeys, function(value) {
+      const op = [{p: [value], od: null, oi: changeStatus.formData[value]}];
+      this.state.form.submitOp(op, function(err) {
+        if (err) { console.log(err); }
+      })
+    }.bind(this));
+
+    this.props.onChange(changeStatus);
   }
 
   render() {
@@ -68,7 +85,7 @@ class CollabForm extends Component {
       this.state.form &&
       <Form
         {...this.props}
-        onChange={this._onChange.bind(this)}
+        onChange={this.onChange.bind(this)}
         formContext={this.state.form}
         formData={this.state.form.data}
       />
