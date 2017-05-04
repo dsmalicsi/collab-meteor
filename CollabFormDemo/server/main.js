@@ -2,21 +2,22 @@ import { Meteor } from 'meteor/meteor';
 import { CollabMeteor, CollabModel } from 'meteor/danongba:collab-meteor';
 
 // Create the collection that will hold the shared data.
-const formModel = new CollabModel("forms");
+const formModel = new CollabModel('forms');
 
 // Define the schema of the data
 const schema = {
-  title: "My Collaborative form",
-  type: "object",
+  title: 'My Collaborative form',
+  type: 'object',
   properties: {
-    input: {type: "string", title: "Input"},
-    checkbox: {type: "boolean", title: "Checkbox"},
-    textarea: {type: "string", title: "Textarea", default: 'Default text'},
+    input: { type: 'string', title: 'Input' },
+    checkbox: { type: 'boolean', title: 'Checkbox' },
+    something: { type: 'boolean', title: 'Something' },
+    textarea: { type: 'string', title: 'Textarea', default: 'Default text' }
   }
 };
 
 // Create the shared form data
-formModel.createForm("myForm", schema);
+formModel.createForm('myForm', schema);
 
 Meteor.startup(() => {
   // start the CollabMeteor server

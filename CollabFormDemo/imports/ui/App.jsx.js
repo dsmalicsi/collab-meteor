@@ -10,27 +10,58 @@ export default class App extends Component {
     super(props);
 
     this.schema = {
-      title: "My Collaborative form",
-      type: "object",
-      required: ["input", "textarea"],
+      title: 'My Collaborative form',
+      type: 'object',
       properties: {
-        input: {type: "string", title: "Input"},
-        checkbox: {type: "boolean", title: "Checkbox"},
-        textarea: {type: "string", title: "Textarea", default: 'Default text'},
+        collab: {
+          type: 'boolean',
+          title: 'Collaborative?'
+        },
+        justify: {
+          type: 'boolean',
+          title: 'Students must justify their answers'
+        },
+        MCQ: {
+          title: 'MCQ',
+          type: 'array',
+          items: {
+            type: 'object',
+            title: 'New Question',
+            properties: {
+              question: {
+                type: 'string',
+                title: 'Question'
+              },
+              answers: {
+                type: 'array',
+                title: 'Possible answers',
+                items: {
+                  type: 'object',
+                  properties: {
+                    answer: {
+                      type: 'string',
+                      title: 'Answer'
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
       }
     };
 
     this.uiSchema = {
-      input: {"ui:help": "Help text"},
-      textarea: {"ui:widget": "textarea", "ui:options": {rows: 8} },
+      input: { 'ui:help': 'Help text' },
+      textarea: { 'ui:widget': 'textarea', 'ui:options': { rows: 8 } }
     };
   }
 
-  static onChange({formData}) {
+  static onChange({ formData }) {
     console.log('onChange: ' + formData);
   }
 
-  static onSubmit({formData}) {
+  static onSubmit({ formData }) {
     console.log('onSubmit: ' + formData);
   }
 
