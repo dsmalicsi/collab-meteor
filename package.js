@@ -16,6 +16,7 @@ Npm.depends({
   "websocket-json-stream": "0.0.3",
   "ws": "2.2.0",
   "sharedb-string-binding": "1.0.0",
+  "react-jsonschema-form": "0.45.0"
 });
 
 Package.onUse(function(api) {
@@ -30,5 +31,6 @@ Package.onTest(function(api) {
   api.use('ecmascript');
   api.use('tinytest');
   api.use('danongba:collab-meteor');
+  api.use('tmeasday:check-npm-versions');
   api.mainModule('collab-meteor-tests.js');
 });
