@@ -2,7 +2,7 @@
  * Created by dario on 04.05.17.
  */
 import React, { Component } from 'react';
-import { CollabForm } from '../../../collab-meteor-client';
+import { CollabForm } from 'meteor/danongba:collab-meteor';
 
 // App component - represents the whole app
 export default class App extends Component {
