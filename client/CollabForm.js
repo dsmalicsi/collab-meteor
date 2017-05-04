@@ -17,7 +17,7 @@ import CollabStringField from './fields/CollabStringField';
  * - collectionName: The name of the collection
  * - classNames: Optional classnames to apply to the form
  */
-export class CollabForm extends Component {
+class CollabForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -83,5 +83,7 @@ CollabForm.defaultProps = {
   noValidate: false,
   liveValidate: false,
   safeRenderCompletion: false,
-  noHtml5Validate: false,
+  noHtml5Validate: false
 };
+
+export default CollabForm;

@@ -15,7 +15,7 @@ import connection from './connection';
  * - collectionName: The name of the collection
  * - classname: Optional classname to apply to the textarea
  */
-export class CollabEditor extends Component {
+class CollabEditor extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -95,3 +95,5 @@ CollabEditor.PropTypes = {
   rows: PropTypes.number,
   onChange: PropTypes.func
 };
+
+export default CollabEditor;
