@@ -27,11 +27,11 @@ export default class App extends Component {
   }
 
   static onChange({formData}) {
-    console.log('onChange: ' + formData);
+    // console.log('onChange: ' + JSON.stringify(formData));
   }
 
   static onSubmit({formData}) {
-    console.log('onSubmit: ' + formData);
+    console.log('onSubmit: ' + JSON.stringify(formData));
   }
 
   static onError(errors) {
