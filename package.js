@@ -16,13 +16,14 @@ Npm.depends({
   "websocket-json-stream": "0.0.3",
   "ws": "2.2.0",
   "sharedb-string-binding": "1.0.0",
-  "react-jsonschema-form": "0.45.0"
+  "react-jsonschema-form": "0.48.0"
 });
 
 Package.onUse(function(api) {
   api.versionsFrom('1.4.4.1');
   api.use('ecmascript');
   api.use('underscore', 'server');
+  api.use('tmeasday:check-npm-versions', 'client');
   api.mainModule('collab-meteor-client.js', 'client');
   api.mainModule('collab-meteor-server.js', 'server')
 });
@@ -31,6 +32,5 @@ Package.onTest(function(api) {
   api.use('ecmascript');
   api.use('tinytest');
   api.use('danongba:collab-meteor');
-  api.use('tmeasday:check-npm-versions');
   api.mainModule('collab-meteor-tests.js');
 });

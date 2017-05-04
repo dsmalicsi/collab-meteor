@@ -2,7 +2,6 @@
  * Created by dario on 06.04.17.
  */
 import { Meteor } from 'meteor/meteor';
-import { Mongo } from 'meteor/mongo';
 
 import http from 'http';
 import ShareDB from 'sharedb';

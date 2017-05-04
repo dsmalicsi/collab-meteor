@@ -1,8 +1,9 @@
 import { checkNpmVersions } from 'meteor/tmeasday:check-npm-versions';
 
 checkNpmVersions({
-  'react': '15.4.0',
-  'react-dom': '15.4.2',
+  'react': '15.5.x',
+  'react-dom': '15.5.x',
+  'react-jsonschema-form': '0.48.x'
 }, 'danongba:collab-meteor');
 
 export { CollabEditor } from './client/CollabEditor.js';
