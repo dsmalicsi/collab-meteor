@@ -27,7 +27,7 @@ export default class App extends Component {
   }
 
   static onChange({formData}) {
-    console.log('OnChange: ' + formData);
+    console.log('onChange: ' + formData);
   }
 
   static onSubmit({formData}) {
