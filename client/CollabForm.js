@@ -3,7 +3,7 @@
  */
 
 import React, { Component } from 'react';
-import Form from "react-jsonschema-form";
+import Form from 'react-jsonschema-form';
 import connection from './connection';
 import CollabStringField from './fields/CollabStringField';
 
@@ -26,19 +26,22 @@ class CollabForm extends Component {
     };
 
     _.extend(this.props.fields, {
-      StringField: CollabStringField,
+      StringField: CollabStringField
     });
-  };
+  }
 
   componentWillMount() {
     this.subscribeToForm(this.props);
   }
 
   subscribeToForm(props) {
-    const form = connection.get('collab_data_' + props.collectionName, props.id);
-    form.subscribe((err) => {
+    const form = connection.get(
+      'collab_data_' + props.collectionName,
+      props.id
+    );
+    form.subscribe(err => {
       if (err) console.log(err);
-      if(form.type === null) {
+      if (form.type === null) {
         console.log('No form data exist with id: ' + props.id);
       }
     });
@@ -51,31 +54,34 @@ class CollabForm extends Component {
       // We save all non-collaborative keys TODO
 
       // Form data available only when we are done loading the form
-      this.setState({form: form});
+      this.setState({ form: form });
     }
 
     function update() {
       console.log('updated');
-      this.setState({form: form});
+      this.setState({ form: form });
     }
 
     function del() {
       this.state.form.destroy();
       this.state.form.unsubscribe();
-      this.setState({form: null});
+      this.setState({ form: null });
     }
   }
 
-  onChange(changeStatus){
-    console.log(changeStatus);
+  onChange(changeStatus) {
     // We update every element that is non collaborative on onChange
-    _.each(this.state.nonCollabKeys, function(value) {
-      const op = [{p: [value], od: null, oi: changeStatus.formData[value]}];
-      this.state.form.submitOp(op, function(err) {
-        if (err) { console.log(err); }
-      })
-    }.bind(this));
-
+    const that = this;
+    Object.keys(changeStatus.formData).forEach(key => {
+      if (this.state.form.data[key] !== changeStatus.formData[key]) {
+        const op = [{ p: [key], od: null, oi: changeStatus.formData[key] }];
+        this.state.form.submitOp(op, function(err) {
+          if (err) {
+            console.log(err);
+          }
+        });
+      }
+    });
     this.props.onChange(changeStatus);
   }
 
@@ -88,7 +94,7 @@ class CollabForm extends Component {
         formContext={this.state.form}
         formData={this.state.form.data}
       />
-    )
+    );
   }
 }
 
