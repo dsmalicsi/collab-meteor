@@ -12,6 +12,7 @@ const schema = {
     input: {type: "string", title: "Input"},
     checkbox: {type: "boolean", title: "Checkbox"},
     textarea: {type: "string", title: "Textarea", default: 'Default text'},
+    email: {type: "string", title: "Email"},
   }
 };
 

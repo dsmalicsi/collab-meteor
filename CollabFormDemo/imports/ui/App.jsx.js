@@ -17,17 +17,19 @@ export default class App extends Component {
         input: {type: "string", title: "Input"},
         checkbox: {type: "boolean", title: "Checkbox"},
         textarea: {type: "string", title: "Textarea", default: 'Default text'},
+        email: {type: "string", title: "Email"},
       }
     };
 
     this.uiSchema = {
       input: {"ui:help": "Help text"},
       textarea: {"ui:widget": "textarea", "ui:options": {rows: 8} },
+      email: {"ui:widget": "text" },
     };
   }
 
   static onChange({formData}) {
-    // console.log('onChange: ' + JSON.stringify(formData));
+    console.log('onChange: ' + JSON.stringify(formData));
   }
 
   static onSubmit({formData}) {
